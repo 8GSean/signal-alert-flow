@@ -14,7 +14,7 @@ export const HowItWorksSection = () => {
       number: "01",
       icon: Clock,
       title: "Scheduler",
-      description: "Kicks off daily during the US workweek (Monday-Friday), fetching the latest closing prices for a list of stocks via the Alpha Vantage API.",
+      description: "Kicks off daily during the US workweek (Monday-Friday).",
       color: "text-primary",
       bgColor: "bg-primary/10"
     },
