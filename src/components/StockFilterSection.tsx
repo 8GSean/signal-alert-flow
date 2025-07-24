@@ -52,7 +52,7 @@ export const StockFilterSection = () => {
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-3xl lg:text-4xl font-bold mb-4">
-            Stock Filter
+            Create Stock Filter
             <span className="block text-primary">Select & Apply</span>
           </h2>
           <p className="text-lg text-muted-foreground">
