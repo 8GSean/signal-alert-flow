@@ -13,7 +13,7 @@ export const HowItWorksSection = () => {
     {
       number: "01",
       icon: Clock,
-      title: "Trigger & Fetch",
+      title: "Scheduler",
       description: "Kicks off daily, fetching the latest closing prices for a list of stocks via the Alpha Vantage API.",
       color: "text-primary",
       bgColor: "bg-primary/10"
