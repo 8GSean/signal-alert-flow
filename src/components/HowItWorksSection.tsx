@@ -21,7 +21,7 @@ export const HowItWorksSection = () => {
     {
       number: "02", 
       icon: Database,
-      title: "Stock Filter",
+      title: "Create Stock Filter",
       description: "Selects NVIDIA (NVDA): Technology Sector, JPMorgan Chase & Co. (JPM): Financial Sector, The Procter & Gamble Company (PG): Consumer Staples Sector, SPDR S&P 500 ETF Trust (SPY): Broad Market ETF.",
       color: "text-success",
       bgColor: "bg-success/10"
