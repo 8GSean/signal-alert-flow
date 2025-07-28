@@ -19,7 +19,7 @@ export const HeroSection = () => {
           </div>
           
           <h1 className="text-5xl lg:text-7xl font-bold leading-tight mb-6">
-            Automated Trading!
+            Automated Trading
             <span className="block bg-gradient-primary bg-clip-text text-transparent">
               Signals, Straight to
             </span>
