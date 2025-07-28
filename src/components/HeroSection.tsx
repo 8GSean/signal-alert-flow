@@ -45,10 +45,17 @@ export const HeroSection = () => {
               variant="outline" 
               size="lg"
               className="group"
+              asChild
             >
-              <Github className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
-              View on GitHub
-              <ExternalLink className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+              <a 
+                href="https://github.com/8GSean/signal-alert-flow" 
+                target="_blank" 
+                rel="noopener noreferrer"
+              >
+                <Github className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
+                View on GitHub
+                <ExternalLink className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+              </a>
             </Button>
           </div>
         </div>

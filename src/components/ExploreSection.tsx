@@ -28,10 +28,16 @@ export const ExploreSection = () => {
               Access the complete repository with the workflow.json file, 
               setup instructions, and detailed documentation.
             </p>
-            <Button variant="outline" className="w-full group">
-              <Github className="mr-2 h-4 w-4 group-hover:rotate-12 transition-transform" />
-              Browse Repository
-              <ExternalLink className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+            <Button variant="outline" className="w-full group" asChild>
+              <a 
+                href="https://github.com/8GSean/signal-alert-flow" 
+                target="_blank" 
+                rel="noopener noreferrer"
+              >
+                <Github className="mr-2 h-4 w-4 group-hover:rotate-12 transition-transform" />
+                Browse Repository
+                <ExternalLink className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+              </a>
             </Button>
           </div>
           
