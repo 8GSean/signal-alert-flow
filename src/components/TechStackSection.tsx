@@ -1,4 +1,5 @@
 import techStackImage from "@/assets/tech-stack.jpg";
+import techStackImageTest from "@/assets/tech-stack-test.png";
 
 export const TechStackSection = () => {
   const technologies = [
@@ -47,7 +48,7 @@ export const TechStackSection = () => {
             <div className="absolute inset-0 bg-gradient-primary rounded-3xl blur-2xl opacity-20"></div>
             <div className="relative bg-card rounded-3xl p-8 shadow-card border border-border/50">
               <img 
-                src={techStackImage} 
+                src={techStackImageTest} 
                 alt="Technology stack visualization" 
                 className="w-full rounded-xl shadow-lg"
               />
