@@ -5,7 +5,8 @@ import {
   Calculator, 
   Search, 
   MessageSquare,
-  ArrowRight 
+  ArrowRight,
+  Filter 
 } from "lucide-react";
 
 export const HowItWorksSection = () => {
@@ -28,27 +29,35 @@ export const HowItWorksSection = () => {
     },
     {
       number: "03",
-      icon: Calculator,
-      title: "Calculate", 
-      description: "Queries the historical data and uses a custom JavaScript code block to compute the 60-day and 120-day Simple Moving Averages (SMAs) for today and yesterday.",
+      icon: Filter,
+      title: "Apply Stock Filter",
+      description: "Applies the selected stock filter criteria to the watchlist and prepares the filtered stocks for further analysis.",
       color: "text-primary",
       bgColor: "bg-primary/10"
     },
     {
       number: "04",
-      icon: Search,
-      title: "Analyze",
-      description: "Compares the SMAs to detect if a \"Golden Cross\" (60-day SMA moves above 120-day) or a \"Death Cross\" (60-day SMA moves below 120-day) has occurred.",
-      color: "text-success", 
+      icon: Calculator,
+      title: "Calculate", 
+      description: "Queries the historical data and uses a custom JavaScript code block to compute the 60-day and 120-day Simple Moving Averages (SMAs) for today and yesterday.",
+      color: "text-success",
       bgColor: "bg-success/10"
     },
     {
       number: "05",
+      icon: Search,
+      title: "Analyze",
+      description: "Compares the SMAs to detect if a \"Golden Cross\" (60-day SMA moves above 120-day) or a \"Death Cross\" (60-day SMA moves below 120-day) has occurred.",
+      color: "text-primary", 
+      bgColor: "bg-primary/10"
+    },
+    {
+      number: "06",
       icon: MessageSquare,
       title: "Notify",
       description: "Formats a clear, concise message and instantly sends it to a designated Discord channel via a webhook.",
-      color: "text-primary",
-      bgColor: "bg-primary/10"
+      color: "text-success",
+      bgColor: "bg-success/10"
     }
   ];
 
@@ -58,7 +67,7 @@ export const HowItWorksSection = () => {
         <div className="text-center mb-16 animate-fade-in">
           <h2 className="text-4xl lg:text-5xl font-bold mb-6">
             Behind the Scenes:
-            <span className="block text-primary">A 5-Step Process</span>
+            <span className="block text-primary">A 6-Step Process</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             A simplified breakdown of how the automation workflow transforms raw stock data 
