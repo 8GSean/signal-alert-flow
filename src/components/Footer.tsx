@@ -7,7 +7,7 @@ export const Footer = () => {
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="text-center md:text-left">
             <p className="text-foreground font-semibold mb-2">
-              Created by <span className="text-primary">Talia, Yoav, Orad</span>
+              Created by <span className="text-primary">Talia, Yoav & Orad</span>
             </p>
             <p className="text-muted-foreground flex items-center gap-2 justify-center md:justify-start">
               Built with <Heart className="h-4 w-4 text-danger" /> and automation in mind
