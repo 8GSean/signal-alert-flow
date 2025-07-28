@@ -6,7 +6,8 @@ import {
   Search, 
   MessageSquare,
   ArrowRight,
-  Filter 
+  Filter,
+  CalendarCheck
 } from "lucide-react";
 
 export const HowItWorksSection = () => {
@@ -37,7 +38,7 @@ export const HowItWorksSection = () => {
     },
       {
       number: "04",
-      icon: Fetch,
+      icon: Download,
       title: "Fetch the Windowed Data",
       description: "Fetches the windowed data from AlphaVantage API: 'Open', 'High', 'Low', 'Close', 'Volume.' Extracts a window of 100 days.  It is actually the bulk data, it is not yet filtered on a specific day.",
       color: "text-primary",
@@ -45,7 +46,7 @@ export const HowItWorksSection = () => {
     },
     {
       number: "05",
-      icon: Extract_Daily_Data,
+      icon: CalendarCheck,
       title: "Extract Daily Data",
       description: "Gives the data for a specific day, which is the last day in the window.  Real time data is restricted, so this is the best way to obtain it.",
       color: "text-primary",
