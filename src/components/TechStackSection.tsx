@@ -1,5 +1,4 @@
 import techStackImage from "@/assets/tech-stack.jpg";
-import postgresElephant from "@/assets/postgresql-elephant.png";
 
 export const TechStackSection = () => {
   const technologies = [
@@ -63,11 +62,8 @@ export const TechStackSection = () => {
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <div className="w-12 h-12 bg-gradient-primary rounded-xl flex items-center justify-center flex-shrink-0 group-hover:shadow-glow transition-all duration-300">
-                  {tech.name === "PostgreSQL" ? (
-                    <img src={postgresElephant} alt="PostgreSQL elephant" className="w-6 h-6 opacity-80" />
-                  ) : (
-                    <div className="w-6 h-6 bg-white rounded opacity-80"></div>
-                  )}
+                  <div className="w-6 h-6 bg-white rounded opacity-80"></div>
+
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-1">
