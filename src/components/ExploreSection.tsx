@@ -70,10 +70,16 @@ export const ExploreSection = () => {
               Import the workflow directly into your n8n instance and 
               start monitoring your own stock picks immediately.
             </p>
-            <Button variant="outline" className="w-full group">
-              <Copy className="mr-2 h-4 w-4 group-hover:scale-110 transition-transform" />
-              Import to n8n
-              <ExternalLink className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+            <Button variant="outline" className="w-full group" asChild>
+              <a 
+                href="https://n8nb.vps.webdock.cloud/workflow/e0lUmEZDG9qlTdEW" 
+                target="_blank" 
+                rel="noopener noreferrer"
+              >
+                <Copy className="mr-2 h-4 w-4 group-hover:scale-110 transition-transform" />
+                Import to n8n
+                <ExternalLink className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+              </a>
             </Button>
           </div>
         </div>
