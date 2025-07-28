@@ -45,7 +45,7 @@ export const HowItWorksSection = () => {
     },
     {
       number: "05",
-      icon: Extract the Daily Data,
+      icon: Extract_Daily_Data,
       title: "Extract Daily Data",
       description: "Gives the data for a specific day, which is the last day in the window.  Real time data is restricted, so this is the best way to obtain it.",
       color: "text-primary",
