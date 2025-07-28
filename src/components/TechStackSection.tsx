@@ -1,5 +1,5 @@
 import techStackImage from "@/assets/tech-stack.jpg";
-import techStackImageTest from "@/assets/tech-stack-test.png";
+import techStackImageTest from "@/assets/tech-stack.png";
 
 export const TechStackSection = () => {
   const technologies = [
