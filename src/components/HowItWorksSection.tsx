@@ -48,12 +48,12 @@ export const HowItWorksSection = () => {
       number: "05",
       icon: CalendarCheck,
       title: "Extract Daily Data",
-      description: "Gives the data for a specific day, which is the last day in the window.  Real time data is restricted, so this is the best way to obtain it.",
+      description: "Gives the data for a specific day, which is the last day in the window and saves it in the database.  Real time data is restricted, so this is the best way to obtain it.",
       color: "text-primary",
       bgColor: "bg-primary/10"
     },
     {
-      number: "05",
+      number: "06",
       icon: Calculator,
       title: "Calculate", 
       description: "Queries the historical data and uses a custom JavaScript code block to compute the 60-day and 120-day Simple Moving Averages (SMAs) for today and yesterday.",
@@ -61,7 +61,7 @@ export const HowItWorksSection = () => {
       bgColor: "bg-success/10"
     },
     {
-      number: "05",
+      number: "07",
       icon: Search,
       title: "Analyze",
       description: "Compares the SMAs to detect if a \"Golden Cross\" (60-day SMA moves above 120-day) or a \"Death Cross\" (60-day SMA moves below 120-day) has occurred.",
@@ -69,7 +69,7 @@ export const HowItWorksSection = () => {
       bgColor: "bg-primary/10"
     },
     {
-      number: "06",
+      number: "08",
       icon: MessageSquare,
       title: "Notify",
       description: "Formats a clear, concise message and instantly sends it to a designated Discord channel via a webhook.",
