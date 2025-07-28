@@ -35,8 +35,24 @@ export const HowItWorksSection = () => {
       color: "text-primary",
       bgColor: "bg-primary/10"
     },
-    {
+      {
       number: "04",
+      icon: Fetch,
+      title: "Fetch the Windowed Data",
+      description: "Fetches the windowed data from AlphaVantage API: "Open", "High", "Low", "Close", "Volume." Extracts a window of 100 days.  It is actually the bulk data, it is not yet filtered on a specific day."
+      color: "text-primary",
+      bgColor: "bg-primary/10"
+    },
+    {
+      number: "05",
+      icon: Extract the Daily Data,
+      title: "Extract Daily Data",
+      description: "Gives the data for a specific day, which is the last day in the window."
+      color: "text-primary",
+      bgColor: "bg-primary/10"
+    },
+    {
+      number: "05",
       icon: Calculator,
       title: "Calculate", 
       description: "Queries the historical data and uses a custom JavaScript code block to compute the 60-day and 120-day Simple Moving Averages (SMAs) for today and yesterday.",
