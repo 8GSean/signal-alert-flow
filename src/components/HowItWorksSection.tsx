@@ -39,7 +39,7 @@ export const HowItWorksSection = () => {
       number: "04",
       icon: Fetch,
       title: "Fetch the Windowed Data",
-      description: "Fetches the windowed data from AlphaVantage API: 'Open', 'High', 'Low', 'Close', 'Volume.' Extracts a window of 100 days.  It is actually the bulk data, it is not yet filtered on a specific day."
+      description: "Fetches the windowed data from AlphaVantage API: 'Open', 'High', 'Low', 'Close', 'Volume.' Extracts a window of 100 days.  It is actually the bulk data, it is not yet filtered on a specific day.",
       color: "text-primary",
       bgColor: "bg-primary/10"
     },
