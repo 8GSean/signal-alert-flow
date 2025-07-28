@@ -64,7 +64,7 @@ export const HowItWorksSection = () => {
       number: "07",
       icon: Search,
       title: "Analyze",
-      description: "Compares the SMAs to detect if a \"Golden Cross\" (60-day SMA moves above 120-day) or a \"Death Cross\" (60-day SMA moves below 120-day) has occurred.",
+      description: "Compares the SMAs to detect if a \"Golden Cross\" (60-day SMA moves above 120-day) or a \"Death Cross\" (60-day SMA moves below 120-day) has occurred.  Alternatively, it informs if no such event has occured.",
       color: "text-primary", 
       bgColor: "bg-primary/10"
     },
