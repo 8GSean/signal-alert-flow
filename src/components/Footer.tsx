@@ -16,19 +16,25 @@ export const Footer = () => {
           
           <div className="flex items-center gap-4">
             <a 
-              href="#" 
+              href="https://www.linkedin.com/company/tovtech" 
+              target="_blank"
+              rel="noopener noreferrer"
               className="w-10 h-10 bg-muted hover:bg-muted/80 rounded-lg flex items-center justify-center transition-all duration-300 hover:shadow-glow group"
             >
               <Linkedin className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
             </a>
             <a 
-              href="#" 
+              href="https://github.com/TovTechOrg" 
+              target="_blank"
+              rel="noopener noreferrer"
               className="w-10 h-10 bg-muted hover:bg-muted/80 rounded-lg flex items-center justify-center transition-all duration-300 hover:shadow-glow group"
             >
               <Github className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
             </a>
             <a 
-              href="#" 
+              href="https://tovtech.org/" 
+              target="_blank"
+              rel="noopener noreferrer"
               className="w-10 h-10 bg-muted hover:bg-muted/80 rounded-lg flex items-center justify-center transition-all duration-300 hover:shadow-glow group"
             >
               <Globe className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
