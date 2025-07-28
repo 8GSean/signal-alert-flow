@@ -31,7 +31,7 @@ export const HowItWorksSection = () => {
       number: "03",
       icon: Filter,
       title: "Apply Stock Filter",
-      description: "Applies the selected stock filter criteria to the watchlist and prepares the filtered stocks for further analysis.",
+      description: "Applies the selected stock filter criteria to the watchlist and prepares the filtered stocks for further analysis.  This is exectuted sequentially and not in parallel.",
       color: "text-primary",
       bgColor: "bg-primary/10"
     },
