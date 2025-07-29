@@ -1,4 +1,4 @@
-import techStackImage from "@/assets/tech-stack-clear.png";
+import techStackImage from "@/assets/tech-stack.png";
 
 export const TechStackSection = () => {
   const technologies = [
