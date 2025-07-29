@@ -72,13 +72,11 @@ export const ExploreSection = () => {
             </p>
             <Button variant="outline" className="w-full group" asChild>
               <a 
-                href="https://n8nb.vps.webdock.cloud/workflow/e0lUmEZDG9qlTdEW" 
-                target="_blank" 
-                rel="noopener noreferrer"
+                href="/Project_4.json" 
+                download="Project_4.json"
               >
                 <Copy className="mr-2 h-4 w-4 group-hover:scale-110 transition-transform" />
-                Import to n8n
-                <ExternalLink className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                Download Workflow
               </a>
             </Button>
           </div>
