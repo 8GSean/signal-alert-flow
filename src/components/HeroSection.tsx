@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ArrowDown, Github, ExternalLink } from "lucide-react";
 import workflowImage from "@/assets/n8n-workflow.jpg";
-import discordImage from "@/assets/discord-alert.jpg";
+import discordImage from "/lovable-uploads/735e0481-1683-46a4-b89e-134ada18a6ce.png";
 
 export const HeroSection = () => {
   const scrollToSection = (id: string) => {

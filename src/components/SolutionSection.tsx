@@ -1,5 +1,5 @@
 import { CheckCircle, TrendingUp, TrendingDown } from "lucide-react";
-import discordImage from "@/assets/discord-alert.jpg";
+import discordImage from "/lovable-uploads/735e0481-1683-46a4-b89e-134ada18a6ce.png";
 
 export const SolutionSection = () => {
   return (
