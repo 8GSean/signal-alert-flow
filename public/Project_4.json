@@ -1,0 +1,717 @@
+{
+  "name": "Project 4",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "weeks",
+              "triggerAtDay": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "triggerAtHour": 17
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -480,
+        680
+      ],
+      "id": "779bd6aa-633a-4e73-bfc5-9b5622231c56",
+      "name": "Trigger - Daily Close"
+    },
+    {
+      "parameters": {
+        "jsCode": "try {\n  // 1. Configurable windows\n  const SMA_SHORT = 60;\n  const SMA_LONG  = 120;\n  const NEEDED    = SMA_LONG + 1;  // long window + one extra day\n  // 2. Pull in all rows (each item.json has { id, symbol, Date, Close })\n  const rows = items.map(i => i.json);\n  // 3. Group rows by symbol\n  const bySymbol = {};\n  for (const r of rows) {\n    if (!bySymbol[r.symbol]) bySymbol[r.symbol] = [];\n    bySymbol[r.symbol].push(r);\n  }\n  // 4. SMA helper\n  function sma(arr, n, offset = 0) {\n    const slice = arr.slice(offset, offset + n);\n    return slice.reduce((sum, v) => sum + v, 0) / n;\n  }\n  // 5. Compute per‐symbol\n  const output = [];\n  for (const symbol of Object.keys(bySymbol)) {\n    const group = bySymbol[symbol]\n      .sort((a, b) => new Date(b.Date) - new Date(a.Date))  // newest→oldest\n      .slice(0, NEEDED);\n    if (group.length < NEEDED) {\n      output.push({\n        json: {\n          symbol,\n          error: `Not enough data for ${symbol}: ${group.length}/${NEEDED} days`\n        }\n      });\n      continue;\n    }\n    const closes = group.map(r => parseFloat(r.Close));\n    output.push({\n      json: {\n        symbol,\n        sma60_current:   sma(closes, SMA_SHORT, 0),\n        sma120_current:  sma(closes, SMA_LONG,  0),\n        sma60_previous:  sma(closes, SMA_SHORT, 1),\n        sma120_previous: sma(closes, SMA_LONG,  1),\n      }\n    });\n  }\n  return output;\n} catch (err) {\n  // global error fallback\n  return [{ json: { error: err.message } }];\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1060,
+        680
+      ],
+      "id": "fa12bcae-722f-4eae-8859-f51d1e252d5e",
+      "name": "Compute 60/120 SMAs",
+      "alwaysOutputData": false,
+      "retryOnFail": false
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "symbol",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -40,
+        680
+      ],
+      "id": "6954befa-994a-4b2e-bd98-669ae70caed0",
+      "name": "Split - Tickers"
+    },
+    {
+      "parameters": {
+        "url": "https://www.alphavantage.co/query",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "function",
+              "value": "TIME_SERIES_DAILY"
+            },
+            {
+              "name": "symbol",
+              "value": "={{$json[\"symbol\"]}}"
+            },
+            {
+              "name": "apikey",
+              "value": "QB5IVTUKINLWFP58"
+            },
+            {
+              "name": "outputsize",
+              "value": "compact"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        180,
+        680
+      ],
+      "id": "8b32b5dd-df3f-4410-beaf-b5acdb87efef",
+      "name": "Fetch Daily History",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ec70e7cd-3ee8-45d9-bf2e-c53483296ec9",
+              "name": "symbol",
+              "value": "[\"NVDA\",\"JPM\",\"PG\",\"SPY\"]",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -260,
+        680
+      ],
+      "id": "b97b01c1-9fa1-4e54-8a25-5e8a3963e003",
+      "name": "Set - Ticker List",
+      "notesInFlow": false,
+      "notes": "* IWM: Russell 2000 small-cap ETF – captures breadth/volatility outside the large-cap space\n\n* INTC: Intel – value-oriented semiconductor play that often lags/drifts differently than NVDA\n\n* JPM: JP Morgan – bellwether for the financial sector (banks & credit), interest-rate sensitivity\n\n* META: Meta Platforms – mega-cap digital advertising/social media momentum outside pure semis\n\n* NVDA: NVIDIA – leading-edge GPU/AI growth driver, often the pace-setter in tech rallies\n\n* PG: Procter & Gamble – defensive consumer staples, counter-cyclical when risk assets wobble\n\n* SPY: S\\&P 500 ETF – broad large-cap benchmark, anchors the overall market trend\n\n* TSLA: Tesla – high-beta auto/EV hybrid, adds extra swing-intensity vs. other tech names\n\n* XLB: Materials ETF – pure play on chemicals, metals & mining, driven by commodity cycles\n\n* XLE: Energy ETF – oil & gas sector, sensitive to crude swings, low correlation with semis\n\n* XLI: Industrials ETF – aerospace, transport & machinery, captures industrial-cycle turns\n\n* XLU: Utilities ETF – defensive “bond-like” sector, shines in risk-off/stress regimes\n\n* XLV: Health Care ETF – pharma/biotech/devices, often moves independently of the wider market"
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  const payload = item.json;\n  const ts      = payload[\"Time Series (Daily)\"];\n  \n  // ← GUARD against missing or bad TS object\n  if (!ts || typeof ts !== 'object') {\n    return {\n      json: {\n        symbol: payload[\"Meta Data\"]?.[\"2. Symbol\"] || null,\n        error:  payload.Note \n             || payload[\"Error Message\"] \n             || \"No time series returned\",\n      }\n    };\n  }\n\n  const dates = Object.keys(ts).sort((a,b) => new Date(a) - new Date(b));\n  if (dates.length < 2) {\n    throw new Error(\"Not enough data to pick the day before last\");\n  }\n\n  const date = dates[dates.length - 2];\n  const day  = ts[date];\n\n  return {\n    json: {\n      symbol: payload[\"Meta Data\"][\"2. Symbol\"],\n      date,\n      close: day[\"4. close\"],\n    }\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        400,
+        680
+      ],
+      "id": "c9275923-b52f-4a3d-b604-d29c1a57ac18",
+      "name": "Getting today's data"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "historical_stocks",
+          "mode": "list",
+          "cachedResultName": "historical_stocks"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Close": "={{ $json.close }}",
+            "symbol": "={{ $json.symbol }}",
+            "Date": "={{ $json.date }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "symbol",
+              "displayName": "symbol",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Close",
+              "displayName": "Close",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {
+          "skipOnConflict": true
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        620,
+        680
+      ],
+      "id": "25ec92f1-4a94-4427-a448-2abb57d0e193",
+      "name": "Insert rows in a table",
+      "alwaysOutputData": false,
+      "retryOnFail": false,
+      "credentials": {
+        "postgres": {
+          "id": "V7LcZuOHTipiYMTv",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "value": "=public",
+          "mode": "name"
+        },
+        "table": {
+          "__rl": true,
+          "value": "historical_stocks",
+          "mode": "list",
+          "cachedResultName": "historical_stocks"
+        },
+        "limit": "=1573",
+        "sort": {
+          "values": [
+            {
+              "column": "Date",
+              "direction": "DESC"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -480,
+        1400
+      ],
+      "id": "2844275f-4291-4500-9538-4840a96fe92f",
+      "name": "Select rows from a table",
+      "alwaysOutputData": false,
+      "executeOnce": true,
+      "credentials": {
+        "postgres": {
+          "id": "V7LcZuOHTipiYMTv",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://discord.com/api/webhooks/1382627403142140004/iI3EzYKo823PeRRq_kzkbJwPa3oWzajRn28XGgiu4b0DrFVdSw6aVMkn7O2oTa4u0abf",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "content",
+              "value": "={{$json[\"content\"]}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1940,
+        680
+      ],
+      "id": "04cf79ba-e579-4b4a-9653-b2efadbdac93",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "f2b85554-8cec-49f5-8bd4-cccc1e15cc6f",
+              "leftValue": "={{ $json.sma60_previous }}",
+              "rightValue": "={{ $json.sma120_previous }}",
+              "operator": {
+                "type": "number",
+                "operation": "lte"
+              }
+            },
+            {
+              "id": "83d8772f-d217-4b76-84d1-b23bf245357c",
+              "leftValue": "={{ $json.sma60_current }}",
+              "rightValue": "={{ $json.sma120_current }}",
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1280,
+        680
+      ],
+      "id": "1f8a4f46-16aa-4521-9478-18aa3036a6e9",
+      "name": "If (📈)"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "f9e8087a-af4d-43e9-b0da-f12d9564b48f",
+              "leftValue": "={{ $json.sma60_previous }}",
+              "rightValue": "={{ $json.sma120_previous }}",
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            },
+            {
+              "id": "53c773b1-9740-43d7-b5cd-04e8b6256ace",
+              "leftValue": "={{ $json.sma60_current }}",
+              "rightValue": "={{ $json.sma120_current }}",
+              "operator": {
+                "type": "number",
+                "operation": "lt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1500,
+        780
+      ],
+      "id": "06929a05-1e62-4fa9-8268-3246daac0a96",
+      "name": "If (📉)"
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "content",
+              "value": "={{ `🟡↔️ No crossover today for ${$items().map(i=>i.json.symbol).sort((a,b)=>a.localeCompare(b)).join(\", \")}. Monitoring continues…` }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        1720,
+        680
+      ],
+      "id": "df195a3f-0160-4122-bd46-2cce8d703043",
+      "name": "Set - No Signal Msg",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "content",
+              "value": "={{ `🔴📉 Death Cross Alert for **${$json[\"symbol\"]}**! The 60-day SMA has crossed below the 120-day SMA.` }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        1720,
+        880
+      ],
+      "id": "1b03781b-3c52-4d38-ac1f-07c8a9705408",
+      "name": "Set - Death Cross Msg"
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "content",
+              "value": "={{ `🟢📈 Golden Cross Alert for **${$json[\"symbol\"]}**! The 60-day SMA has crossed above the 120-day SMA.` }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        1720,
+        480
+      ],
+      "id": "8aaf215d-30fb-4162-a48b-91627790643f",
+      "name": "Set - Golden Cross Msg"
+    },
+    {
+      "parameters": {
+        "method": "=GET",
+        "url": "=https://api.polygon.io/v2/aggs/ticker/{{$json.symbol}}/prev",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "apiKey",
+              "value": "cxrlhBWxTxew_0nq6gV18KlWWib8fW2Y"
+            },
+            {
+              "name": "sort",
+              "value": "desc"
+            },
+            {
+              "name": "adjusted",
+              "value": "false"
+            }
+          ]
+        },
+        "options": {
+          "batching": {
+            "batch": {
+              "batchSize": 1,
+              "batchInterval": 12000
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -480,
+        1140
+      ],
+      "id": "742a4d58-f989-467c-8b46-dddccb1d2699",
+      "name": "Fetch Daily History1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Assume HTTP node ran with sort=desc & limit=121\nreturn items.map(item => {\n  const symbol = item.json.ticker;\n  const bars   = item.json.results;        // newest→oldest\n  const slice  = bars.slice(0, 121).reverse(); // oldest→newest\n\n  return slice.map(bar => ({\n    json: {\n      symbol,\n      Date:  new Date(bar.t).toISOString().slice(0,10),\n      Close: bar.c\n    }\n  }));\n}).flat();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -260,
+        1140
+      ],
+      "id": "9999beea-d8ff-4fc5-976b-dcc1dfb7d31a",
+      "name": "Getting today's data1"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "WITH numbered AS (\n  SELECT\n    *,\n    ROW_NUMBER() OVER (\n      PARTITION BY symbol\n      ORDER BY \"Date\" DESC\n    ) AS rn\n  FROM public.historical_stocks\nWHERE symbol IN ('NVDA','JPM','SPY','PG')\n)\nSELECT\n  id,\n  symbol,\n  \"Date\",\n  \"Close\"\nFROM numbered\nWHERE rn <= 121\nORDER BY symbol, \"Date\" DESC;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        840,
+        680
+      ],
+      "id": "c57e978d-af44-4243-a55f-fb8002315731",
+      "name": "Execute a SQL query",
+      "executeOnce": true,
+      "credentials": {
+        "postgres": {
+          "id": "V7LcZuOHTipiYMTv",
+          "name": "Postgres account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Trigger - Daily Close": {
+      "main": [
+        [
+          {
+            "node": "Set - Ticker List",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Compute 60/120 SMAs": {
+      "main": [
+        [
+          {
+            "node": "If (📈)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split - Tickers": {
+      "main": [
+        [
+          {
+            "node": "Fetch Daily History",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Daily History": {
+      "main": [
+        [
+          {
+            "node": "Getting today's data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set - Ticker List": {
+      "main": [
+        [
+          {
+            "node": "Split - Tickers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Getting today's data": {
+      "main": [
+        [
+          {
+            "node": "Insert rows in a table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert rows in a table": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Select rows from a table": {
+      "main": [
+        []
+      ]
+    },
+    "If (📈)": {
+      "main": [
+        [
+          {
+            "node": "Set - Golden Cross Msg",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If (📉)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If (📉)": {
+      "main": [
+        [
+          {
+            "node": "Set - Death Cross Msg",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set - No Signal Msg",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set - No Signal Msg": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set - Death Cross Msg": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set - Golden Cross Msg": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Daily History1": {
+      "main": [
+        [
+          {
+            "node": "Getting today's data1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Getting today's data1": {
+      "main": [
+        []
+      ]
+    },
+    "Execute a SQL query": {
+      "main": [
+        [
+          {
+            "node": "Compute 60/120 SMAs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "edf5cecc-49ab-4592-8c58-8688e2c17f42",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c60980391e97328f018838a7c9681b2105b5b6b1ade78f0d4ee15b43dfde9ec4"
+  },
+  "id": "e0lUmEZDG9qlTdEW",
+  "tags": [
+    {
+      "createdAt": "2025-07-02T07:17:34.211Z",
+      "updatedAt": "2025-07-02T07:17:34.211Z",
+      "id": "5qhjoFNW0Ic5FBzh",
+      "name": "Sean"
+    }
+  ]
+}
