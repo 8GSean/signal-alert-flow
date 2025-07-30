@@ -1,6 +1,20 @@
 {
-  "name": "Project 4",
   "nodes": [
+    {
+      "parameters": {
+        "content": "## 📊 Stock Market Analysis Workflow\n\nThis workflow monitors **Golden Cross** and **Death Cross** signals for stocks using moving averages.\n\n**Golden Cross**: 60-day SMA crosses above 120-day SMA (Bullish)\n**Death Cross**: 60-day SMA crosses below 120-day SMA (Bearish)\n\nRuns daily at 5 PM on weekdays to analyze market close data.",
+        "height": 200,
+        "width": 700
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -480,
+        0
+      ],
+      "id": "f3acef6a-a25d-4f8a-ba03-62731eb2caff",
+      "name": "Sticky Note"
+    },
     {
       "parameters": {
         "rule": {
@@ -22,11 +36,26 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
       "position": [
-        -480,
-        680
+        -420,
+        260
       ],
-      "id": "779bd6aa-633a-4e73-bfc5-9b5622231c56",
+      "id": "5860551a-7e28-4a2e-9b57-9c9eee052027",
       "name": "Trigger - Daily Close"
+    },
+    {
+      "parameters": {
+        "content": "## 📈 Data Collection Phase\n\n1. **Stock Selection**: Define ticker symbols for analysis\n2. **API Fetch**: Get daily price data from Alpha Vantage\n3. **Data Processing**: Extract yesterday's closing prices\n4. **Database Storage**: Store historical data for analysis\n\nCurrently monitoring: NVDA, JPM, PG, SPY",
+        "height": 220,
+        "width": 400
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        220,
+        460
+      ],
+      "id": "db84cf85-94dd-401e-996c-30961d12d496",
+      "name": "Sticky Note1"
     },
     {
       "parameters": {
@@ -35,13 +64,28 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1060,
-        680
+        1120,
+        260
       ],
-      "id": "fa12bcae-722f-4eae-8859-f51d1e252d5e",
+      "id": "694bb8c3-5c80-44db-831d-70dce4ba872b",
       "name": "Compute 60/120 SMAs",
       "alwaysOutputData": false,
       "retryOnFail": false
+    },
+    {
+      "parameters": {
+        "content": "## 🧮 Technical Analysis Engine\n\n**Simple Moving Averages (SMA)**:\n- 60-day SMA (short-term trend)\n- 120-day SMA (long-term trend)\n\n**Crossover Detection**:\n- Compares current vs previous day values\n- Identifies trend reversals in real-time\n- Requires 121 days of historical data",
+        "height": 260,
+        "width": 380
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        940,
+        460
+      ],
+      "id": "f6aae56c-2129-4435-8895-89759829cdcf",
+      "name": "Sticky Note2"
     },
     {
       "parameters": {
@@ -51,10 +95,10 @@
       "type": "n8n-nodes-base.splitOut",
       "typeVersion": 1,
       "position": [
-        -40,
-        680
+        20,
+        260
       ],
-      "id": "6954befa-994a-4b2e-bd98-669ae70caed0",
+      "id": "c9101e92-f8af-4ef6-b28e-18a1ccc932b5",
       "name": "Split - Tickers"
     },
     {
@@ -73,7 +117,7 @@
             },
             {
               "name": "apikey",
-              "value": "QB5IVTUKINLWFP58"
+              "value": "YOURKEYHERE"
             },
             {
               "name": "outputsize",
@@ -86,10 +130,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        180,
-        680
+        240,
+        260
       ],
-      "id": "8b32b5dd-df3f-4410-beaf-b5acdb87efef",
+      "id": "c31e3d37-1926-46bc-86a9-f89e3927704b",
       "name": "Fetch Daily History",
       "onError": "continueRegularOutput"
     },
@@ -110,10 +154,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -260,
-        680
+        -200,
+        260
       ],
-      "id": "b97b01c1-9fa1-4e54-8a25-5e8a3963e003",
+      "id": "f9b56387-fef9-4efc-943b-ac0971f9d522",
       "name": "Set - Ticker List",
       "notesInFlow": false,
       "notes": "* IWM: Russell 2000 small-cap ETF – captures breadth/volatility outside the large-cap space\n\n* INTC: Intel – value-oriented semiconductor play that often lags/drifts differently than NVDA\n\n* JPM: JP Morgan – bellwether for the financial sector (banks & credit), interest-rate sensitivity\n\n* META: Meta Platforms – mega-cap digital advertising/social media momentum outside pure semis\n\n* NVDA: NVIDIA – leading-edge GPU/AI growth driver, often the pace-setter in tech rallies\n\n* PG: Procter & Gamble – defensive consumer staples, counter-cyclical when risk assets wobble\n\n* SPY: S\\&P 500 ETF – broad large-cap benchmark, anchors the overall market trend\n\n* TSLA: Tesla – high-beta auto/EV hybrid, adds extra swing-intensity vs. other tech names\n\n* XLB: Materials ETF – pure play on chemicals, metals & mining, driven by commodity cycles\n\n* XLE: Energy ETF – oil & gas sector, sensitive to crude swings, low correlation with semis\n\n* XLI: Industrials ETF – aerospace, transport & machinery, captures industrial-cycle turns\n\n* XLU: Utilities ETF – defensive “bond-like” sector, shines in risk-off/stress regimes\n\n* XLV: Health Care ETF – pharma/biotech/devices, often moves independently of the wider market"
@@ -125,10 +169,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        400,
-        680
+        460,
+        260
       ],
-      "id": "c9275923-b52f-4a3d-b604-d29c1a57ac18",
+      "id": "2aec21da-cbba-4574-9794-98ccdafb268b",
       "name": "Getting today's data"
     },
     {
@@ -203,10 +247,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        620,
-        680
+        680,
+        260
       ],
-      "id": "25ec92f1-4a94-4427-a448-2abb57d0e193",
+      "id": "825fab86-cdea-49f3-b162-65b2d4e26ea0",
       "name": "Insert rows in a table",
       "alwaysOutputData": false,
       "retryOnFail": false,
@@ -219,50 +263,8 @@
     },
     {
       "parameters": {
-        "operation": "select",
-        "schema": {
-          "__rl": true,
-          "value": "=public",
-          "mode": "name"
-        },
-        "table": {
-          "__rl": true,
-          "value": "historical_stocks",
-          "mode": "list",
-          "cachedResultName": "historical_stocks"
-        },
-        "limit": "=1573",
-        "sort": {
-          "values": [
-            {
-              "column": "Date",
-              "direction": "DESC"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.postgres",
-      "typeVersion": 2.6,
-      "position": [
-        -480,
-        1400
-      ],
-      "id": "2844275f-4291-4500-9538-4840a96fe92f",
-      "name": "Select rows from a table",
-      "alwaysOutputData": false,
-      "executeOnce": true,
-      "credentials": {
-        "postgres": {
-          "id": "V7LcZuOHTipiYMTv",
-          "name": "Postgres account"
-        }
-      }
-    },
-    {
-      "parameters": {
         "method": "POST",
-        "url": "https://discord.com/api/webhooks/1382627403142140004/iI3EzYKo823PeRRq_kzkbJwPa3oWzajRn28XGgiu4b0DrFVdSw6aVMkn7O2oTa4u0abf",
+        "url": "https://discord.com/api/webhooks/YOURWEBHOOKHERE",
         "sendQuery": true,
         "queryParameters": {
           "parameters": [
@@ -283,11 +285,26 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1940,
-        680
+        2200,
+        260
       ],
-      "id": "04cf79ba-e579-4b4a-9653-b2efadbdac93",
+      "id": "6389ccdd-02e0-48b8-93e8-730cbdfda1b6",
       "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "content": "## 🔔 Discord Notifications\n\n**Alert Types**:\n- 🟢 Golden Cross: Bullish signal detected\n- 🔴 Death Cross: Bearish signal detected  \n- 🟡 No Signal: Monitoring continues\n\n**Message Format**: Includes emoji, stock symbol, and signal description for easy identification.",
+        "height": 220,
+        "width": 380
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2080,
+        0
+      ],
+      "id": "d0eb4106-9bb0-4752-bb68-59c9d5d15d1a",
+      "name": "Sticky Note3"
     },
     {
       "parameters": {
@@ -325,11 +342,26 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        1280,
-        680
+        1340,
+        260
       ],
-      "id": "1f8a4f46-16aa-4521-9478-18aa3036a6e9",
+      "id": "6420c403-0bf5-4de3-a82b-080292be75ec",
       "name": "If (📈)"
+    },
+    {
+      "parameters": {
+        "content": "## 🚦 Signal Detection Logic\n\n**Golden Cross (📈)**: \n- Yesterday: 60-day ≤ 120-day SMA\n- Today: 60-day > 120-day SMA\n\n**Death Cross (📉)**:\n- Yesterday: 60-day ≥ 120-day SMA  \n- Today: 60-day < 120-day SMA\n\n**No Signal**: No crossover detected",
+        "height": 260,
+        "width": 320
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1320,
+        -120
+      ],
+      "id": "1910f369-5404-45e6-a225-048b5fc34316",
+      "name": "Sticky Note4"
     },
     {
       "parameters": {
@@ -367,10 +399,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        1500,
-        780
+        1560,
+        360
       ],
-      "id": "06929a05-1e62-4fa9-8268-3246daac0a96",
+      "id": "1ef9e403-7021-45d5-91b6-cea5f7e30a3e",
       "name": "If (📉)"
     },
     {
@@ -389,10 +421,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 2,
       "position": [
-        1720,
-        680
+        1780,
+        260
       ],
-      "id": "df195a3f-0160-4122-bd46-2cce8d703043",
+      "id": "77a4c20b-a7a1-46e2-8ffa-70b4310d75f9",
       "name": "Set - No Signal Msg",
       "executeOnce": true
     },
@@ -412,10 +444,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 2,
       "position": [
-        1720,
-        880
+        1780,
+        460
       ],
-      "id": "1b03781b-3c52-4d38-ac1f-07c8a9705408",
+      "id": "c7f0cba2-2d46-483a-9f8e-ca741da5c2e6",
       "name": "Set - Death Cross Msg"
     },
     {
@@ -434,63 +466,11 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 2,
       "position": [
-        1720,
-        480
+        1780,
+        60
       ],
-      "id": "8aaf215d-30fb-4162-a48b-91627790643f",
+      "id": "3926135c-6308-479d-9e1f-1da7248a01ea",
       "name": "Set - Golden Cross Msg"
-    },
-    {
-      "parameters": {
-        "method": "=GET",
-        "url": "=https://api.polygon.io/v2/aggs/ticker/{{$json.symbol}}/prev",
-        "sendQuery": true,
-        "queryParameters": {
-          "parameters": [
-            {
-              "name": "apiKey",
-              "value": "cxrlhBWxTxew_0nq6gV18KlWWib8fW2Y"
-            },
-            {
-              "name": "sort",
-              "value": "desc"
-            },
-            {
-              "name": "adjusted",
-              "value": "false"
-            }
-          ]
-        },
-        "options": {
-          "batching": {
-            "batch": {
-              "batchSize": 1,
-              "batchInterval": 12000
-            }
-          }
-        }
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        -480,
-        1140
-      ],
-      "id": "742a4d58-f989-467c-8b46-dddccb1d2699",
-      "name": "Fetch Daily History1"
-    },
-    {
-      "parameters": {
-        "jsCode": "// Assume HTTP node ran with sort=desc & limit=121\nreturn items.map(item => {\n  const symbol = item.json.ticker;\n  const bars   = item.json.results;        // newest→oldest\n  const slice  = bars.slice(0, 121).reverse(); // oldest→newest\n\n  return slice.map(bar => ({\n    json: {\n      symbol,\n      Date:  new Date(bar.t).toISOString().slice(0,10),\n      Close: bar.c\n    }\n  }));\n}).flat();"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        -260,
-        1140
-      ],
-      "id": "9999beea-d8ff-4fc5-976b-dcc1dfb7d31a",
-      "name": "Getting today's data1"
     },
     {
       "parameters": {
@@ -501,10 +481,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        840,
-        680
+        900,
+        260
       ],
-      "id": "c57e978d-af44-4243-a55f-fb8002315731",
+      "id": "34474f1f-9caf-4d6e-bbd9-294aa8a73cfb",
       "name": "Execute a SQL query",
       "executeOnce": true,
       "credentials": {
@@ -515,7 +495,6 @@
       }
     }
   ],
-  "pinData": {},
   "connections": {
     "Trigger - Daily Close": {
       "main": [
@@ -594,11 +573,6 @@
         ]
       ]
     },
-    "Select rows from a table": {
-      "main": [
-        []
-      ]
-    },
     "If (📈)": {
       "main": [
         [
@@ -668,22 +642,6 @@
         ]
       ]
     },
-    "Fetch Daily History1": {
-      "main": [
-        [
-          {
-            "node": "Getting today's data1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Getting today's data1": {
-      "main": [
-        []
-      ]
-    },
     "Execute a SQL query": {
       "main": [
         [
@@ -696,22 +654,8 @@
       ]
     }
   },
-  "active": true,
-  "settings": {
-    "executionOrder": "v1"
-  },
-  "versionId": "edf5cecc-49ab-4592-8c58-8688e2c17f42",
+  "pinData": {},
   "meta": {
-    "templateCredsSetupCompleted": true,
     "instanceId": "c60980391e97328f018838a7c9681b2105b5b6b1ade78f0d4ee15b43dfde9ec4"
-  },
-  "id": "e0lUmEZDG9qlTdEW",
-  "tags": [
-    {
-      "createdAt": "2025-07-02T07:17:34.211Z",
-      "updatedAt": "2025-07-02T07:17:34.211Z",
-      "id": "5qhjoFNW0Ic5FBzh",
-      "name": "Sean"
-    }
-  ]
+  }
 }
